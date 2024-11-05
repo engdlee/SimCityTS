@@ -106,7 +106,7 @@ export function createCamera(gameWindow: HTMLElement) {
       cameraRadius *
       Math.sin(cameraAzimuth * DEG2RAD) *
       Math.cos(cameraElevation * DEG2RAD);
-    camera.position.y = cameraRadius * Math.sin(cameraAzimuth * DEG2RAD);
+    camera.position.y = cameraRadius * Math.sin(cameraElevation * DEG2RAD);
     camera.position.z =
       cameraRadius *
       Math.cos(cameraAzimuth * DEG2RAD) *
