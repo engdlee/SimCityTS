@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { createCamera } from "./camera";
 
 export function createScene() {
   // initial scene setup
@@ -6,13 +7,7 @@ export function createScene() {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x777777);
 
-  let aspect = 1;
-  if (gameWindow?.offsetWidth && gameWindow?.offsetHeight) {
-    aspect = gameWindow?.offsetWidth / gameWindow?.offsetHeight;
-  }
-
-  const camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
-  camera.position.z = 5;
+  const camera = createCamera(gameWindow as HTMLElement);
 
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(
@@ -27,9 +22,7 @@ export function createScene() {
   scene.add(mesh);
 
   function draw() {
-    mesh.rotation.x += 0.01;
-    mesh.rotation.y += 0.01;
-    renderer.render(scene, camera);
+    renderer.render(scene, camera.camera);
   }
   function start() {
     renderer.setAnimationLoop(draw);
@@ -37,9 +30,21 @@ export function createScene() {
   function stop() {
     renderer.setAnimationLoop(null);
   }
+  function onMouseDown(event: MouseEvent) {
+    camera.onMouseDown(event);
+  }
+  function onMouseUp(event: MouseEvent) {
+    camera.onMouseUp(event);
+  }
+  function onMouseMove(event: MouseEvent) {
+    camera.onMouseMove(event);
+  }
 
   return {
     start,
     stop,
+    onMouseDown,
+    onMouseUp,
+    onMouseMove,
   };
 }
