@@ -1,4 +1,4 @@
-import * as THREE from "https://unpkg.com/three/build/three.module.js";
+import * as THREE from "three";
 
 export function createScene() {
   // initial scene setup
@@ -6,16 +6,19 @@ export function createScene() {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x777777);
 
-  const camera = new THREE.PerspectiveCamera(
-    75,
-    gameWindow?.offsetWidth / gameWindow?.offsetHeight,
-    0.1,
-    1000
-  );
+  let aspect = 1;
+  if (gameWindow?.offsetWidth && gameWindow?.offsetHeight) {
+    aspect = gameWindow?.offsetWidth / gameWindow?.offsetHeight;
+  }
+
+  const camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
   camera.position.z = 5;
 
   const renderer = new THREE.WebGLRenderer();
-  renderer.setSize(gameWindow?.offsetWidth, gameWindow?.offsetHeight);
+  renderer.setSize(
+    gameWindow?.offsetWidth ?? 100,
+    gameWindow?.offsetHeight ?? 100
+  );
   gameWindow?.appendChild(renderer.domElement);
 
   const geometry = new THREE.BoxGeometry(1, 1, 1);
